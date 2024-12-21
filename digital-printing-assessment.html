@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highcon Digital Printing Assessment</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            color: #3a3a3a;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"], input[type="email"], select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .result {
+            padding: 15px;
+            background-color: #e8f5e9;
+            border: 1px solid #c8e6c9;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+        }
+        .highlight {
+            font-weight: bold;
+            color: #2e7d32;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Discover if Highcon's Digital Printing Solutions Are Right for You!</h1>
+
+        <!-- Section 1: Lead Details -->
+        <div class="section" id="lead-info">
+            <h2>Let's Get Started!</h2>
+            <p>Tell us a bit about yourself to begin:</p>
+            <div class="form-group">
+                <label for="full-name">Full Name:</label>
+                <input type="text" id="full-name" placeholder="Your full name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email:</label>
+                <input type="email" id="email" placeholder="Your email address">
+            </div>
+            <div class="form-group">
+                <label for="business">Business Name:</label>
+                <input type="text" id="business" placeholder="Your business name">
+            </div>
+            <div class="form-group">
+                <label for="industry">Industry:</label>
+                <select id="industry">
+                    <option value="packaging">Packaging</option>
+                    <option value="advertising">Advertising</option>
+                    <option value="publishing">Publishing</option>
+                    <option value="custom">Custom Printing</option>
+                </select>
+            </div>
+            <button onclick="startAssessment()">Start Your Free Assessment</button>
+        </div>
+
+        <!-- Section 2: Interactive Questions -->
+        <div class="section" id="assessment-questions" style="display: none;">
+            <h2>Answer a Few Quick Questions:</h2>
+            <div class="form-group">
+                <label for="annual-prints">How many prints do you produce annually?</label>
+                <select id="annual-prints">
+                    <option value="low">10,000-50,000</option>
+                    <option value="medium">50,000-200,000</option>
+                    <option value="high">200,000+</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="plates">How many printing plates do you use annually?</label>
+                <select id="plates">
+                    <option value="low">0-100</option>
+                    <option value="medium">100-500</option>
+                    <option value="high">500+</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="storage">How much space do you allocate for storage (in square meters)?</label>
+                <select id="storage">
+                    <option value="low">0-100 sqm</option>
+                    <option value="medium">100-500 sqm</option>
+                    <option value="high">500+ sqm</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="ink">How much ink do you consume annually (in liters)?</label>
+                <select id="ink">
+                    <option value="low">0-1000 liters</option>
+                    <option value="medium">1000-5000 liters</option>
+                    <option value="high">5000+ liters</option>
+                </select>
+            </div>
+            <button onclick="showResults()">See My Results</button>
+        </div>
+
+        <!-- Section 3: Results -->
+        <div class="section" id="results" style="display: none;">
+            <h2>Your Assessment Results:</h2>
+            <div class="result" id="qualified">
+                <p>Great news! <span class="highlight">Highcon's digital printing solutions</span> can save you up to 50% of your time and costs annually.</p>
+                <button>Book Your Free Demo Now!</button>
+            </div>
+            <div class="result" id="not-qualified">
+                <p>Based on your current operations, our solution might not be the right fit for you just yet. However, we’d love to assist you when your business scales further!</p>
+                <button>Contact Us for Future Solutions</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function startAssessment() {
+            document.getElementById('lead-info').style.display = 'none';
+            document.getElementById('assessment-questions').style.display = 'block';
+        }
+
+        function showResults() {
+            document.getElementById('assessment-questions').style.display = 'none';
+
+            // Example logic for results
+            const prints = document.getElementById('annual-prints').value;
+
+            if (prints === 'low') {
+                document.getElementById('not-qualified').style.display = 'block';
+            } else {
+                document.getElementById('qualified').style.display = 'block';
+            }
+
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
