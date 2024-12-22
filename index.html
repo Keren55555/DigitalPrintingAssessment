@@ -43,13 +43,34 @@
             font-size: 1rem;
             border-radius: 5px;
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 10px;
+            display: block;
+            width: 90%;
+            margin-left: auto;
+            margin-right: auto;
+            transition: transform 0.2s;
         }
         button:hover {
             background-color: #45a049;
+            transform: scale(1.05);
         }
         .results {
             display: none;
+        }
+        .form-group {
+            margin-bottom: 15px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
         }
     </style>
 </head>
@@ -58,6 +79,22 @@
         <div class="header">Revolutionize Your Printing – See How!</div>
         <div class="content">
             <p>Discover how Highcon's innovative solutions can save you time and money.</p>
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" placeholder="Enter your name">
+            </div>
+            <div class="form-group">
+                <label for="company">Company Name</label>
+                <input type="text" id="company" placeholder="Enter your company name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" placeholder="Enter your email">
+            </div>
+            <div class="form-group">
+                <label for="role">Role</label>
+                <input type="text" id="role" placeholder="Enter your role">
+            </div>
             <button onclick="startAssessment()">Start Now</button>
         </div>
     </div>
