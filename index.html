@@ -22,149 +22,125 @@
             border-radius: 10px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            text-align: center;
+            padding: 20px;
         }
         .header {
             background-color: #4caf50;
             color: white;
-            text-align: center;
+            font-size: 1.5rem;
             padding: 15px;
-            font-size: 1.2rem;
+            border-radius: 10px 10px 0 0;
         }
         .content {
-            padding: 20px;
-            text-align: center;
-        }
-        .question {
-            font-size: 1.1rem;
-            margin-bottom: 20px;
-        }
-        .options button {
-            display: block;
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            font-size: 1rem;
-            color: #fff;
-            background-color: #4caf50;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .options button:hover {
-            background-color: #45a049;
-        }
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
             margin-top: 20px;
         }
-        .nav-buttons button {
-            padding: 10px 20px;
-            font-size: 0.9rem;
-            color: #fff;
+        button {
             background-color: #4caf50;
+            color: white;
             border: none;
+            padding: 10px 20px;
+            font-size: 1rem;
             border-radius: 5px;
             cursor: pointer;
+            margin-top: 20px;
         }
-        .nav-buttons button:hover {
+        button:hover {
             background-color: #45a049;
+        }
+        .results {
+            display: none;
         }
     </style>
 </head>
 <body>
-    <div class="container" id="app">
-        <div class="header">Digital Printing Assessment</div>
+    <div class="container" id="welcome-screen">
+        <div class="header">Revolutionize Your Printing – See How!</div>
         <div class="content">
-            <div id="question-container">
-                <div class="question" id="question-text">How many prints do you produce annually?</div>
-                <div class="options">
-                    <button onclick="nextQuestion('low')">0-10,000</button>
-                    <button onclick="nextQuestion('medium')">10,000-50,000</button>
-                    <button onclick="nextQuestion('high')">50,000+</button>
-                </div>
-            </div>
-            <div class="nav-buttons" style="display: none;" id="nav-buttons">
-                <button onclick="prevQuestion()">Back</button>
-            </div>
+            <p>Discover how Highcon's innovative solutions can save you time and money.</p>
+            <button onclick="startAssessment()">Start Now</button>
+        </div>
+    </div>
+
+    <div class="container" id="assessment-screen" style="display: none;">
+        <div class="header">Digital Printing Assessment</div>
+        <div class="content" id="question-container">
+            <!-- Questions will dynamically load here -->
+        </div>
+        <div>
+            <button id="back-button" onclick="previousQuestion()" style="display: none;">Back</button>
+            <button id="next-button" onclick="nextQuestion()">Next</button>
+        </div>
+    </div>
+
+    <div class="container" id="results-screen" style="display: none;">
+        <div class="header">Assessment Results</div>
+        <div class="content">
+            <p id="results-message"></p>
+            <button onclick="restartAssessment()">Restart</button>
         </div>
     </div>
 
     <script>
+        let currentStep = 0;
         const questions = [
-            {
-                text: "How many prints do you produce annually?",
-                options: ["0-10,000", "10,000-50,000", "50,000+"]
-            },
-            {
-                text: "How many printing plates do you use annually?",
-                options: ["0-100", "100-500", "500+"]
-            },
-            {
-                text: "How much space do you allocate for storage (in square meters)?",
-                options: ["0-100 sqm", "100-500 sqm", "500+ sqm"]
-            },
-            {
-                text: "How much ink do you consume annually (in liters)?",
-                options: ["0-1000 liters", "1000-5000 liters", "5000+ liters"]
-            }
+            { text: "How many prints do you produce annually?", options: ["0-10,000", "10,000-50,000", "50,000-200,000", "200,000+"] },
+            { text: "How many printing plates do you use annually?", options: ["0-100", "100-500", "500+"] },
+            { text: "How much space do you allocate for storage (in square meters)?", options: ["0-100 sqm", "100-500 sqm", "500+ sqm"] },
+            { text: "How much ink do you consume annually (in liters)?", options: ["0-1000 liters", "1000-5000 liters", "5000+ liters"] }
         ];
 
-        let currentQuestionIndex = 0;
-
-        function updateQuestion() {
-            const questionContainer = document.getElementById('question-container');
-            const questionText = document.getElementById('question-text');
-            const options = document.querySelector('.options');
-
-            const question = questions[currentQuestionIndex];
-            questionText.textContent = question.text;
-            options.innerHTML = '';
-
-            question.options.forEach(option => {
-                const button = document.createElement('button');
-                button.textContent = option;
-                button.onclick = () => nextQuestion(option);
-                options.appendChild(button);
-            });
-
-            document.getElementById('nav-buttons').style.display = currentQuestionIndex > 0 ? 'flex' : 'none';
+        function startAssessment() {
+            document.getElementById('welcome-screen').style.display = 'none';
+            document.getElementById('assessment-screen').style.display = 'block';
+            showQuestion();
         }
 
-        function nextQuestion(option) {
-            // Store response logic here if needed
-            currentQuestionIndex++;
-            if (currentQuestionIndex < questions.length) {
-                updateQuestion();
+        function showQuestion() {
+            const container = document.getElementById('question-container');
+            const question = questions[currentStep];
+            container.innerHTML = `<h2>${question.text}</h2>` + 
+                question.options.map(option => `<button onclick="selectOption('${option}')">${option}</button>`).join('');
+
+            document.getElementById('back-button').style.display = currentStep > 0 ? 'inline' : 'none';
+        }
+
+        function selectOption(option) {
+            questions[currentStep].selected = option;
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (currentStep < questions.length - 1) {
+                currentStep++;
+                showQuestion();
             } else {
                 showResults();
             }
         }
 
-        function prevQuestion() {
-            if (currentQuestionIndex > 0) {
-                currentQuestionIndex--;
-                updateQuestion();
+        function previousQuestion() {
+            if (currentStep > 0) {
+                currentStep--;
+                showQuestion();
             }
         }
 
         function showResults() {
-            const container = document.getElementById('app');
-            container.innerHTML = `
-                <div class="header">Assessment Results</div>
-                <div class="content">
-                    <p>Thank you for completing the assessment!</p>
-                    <button onclick="restart()">Restart</button>
-                </div>
-            `;
+            document.getElementById('assessment-screen').style.display = 'none';
+            document.getElementById('results-screen').style.display = 'block';
+
+            const isQualified = questions.some(q => q.selected === "50,000-200,000" || q.selected === "200,000+");
+            const message = isQualified
+                ? "Great news! Highcon’s solutions can save you up to 30% on costs and reduce job completion time by 40%."
+                : "Thank you for your time! Currently, our solutions may not align with your needs just yet. When your printing volume grows, we’d be thrilled to reconnect and help you transform your business.";
+            document.getElementById('results-message').innerText = message;
         }
 
-        function restart() {
-            currentQuestionIndex = 0;
+        function restartAssessment() {
+            currentStep = 0;
             location.reload();
         }
-
-        updateQuestion();
     </script>
 </body>
 </html>
